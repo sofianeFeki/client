@@ -6,12 +6,12 @@ import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC0PY1N86HykJ7nqBi1HTk7mHipOAAsUgY"
-  authDomain:"komparcrm.firebaseapp.com"
-  projectId: "komparcrm"
-  storageBucket:"komparcrm.appspot.com"
-  messagingSenderId:"558093639007"
-  appId: "1:558093639007:web:e2ad823aa34cdfdfb66aea"
+  apiKey: "AIzaSyC0PY1N86HykJ7nqBi1HTk7mHipOAAsUgY",
+  authDomain:"komparcrm.firebaseapp.com",
+  projectId: "komparcrm",
+  storageBucket:"komparcrm.appspot.com",
+  messagingSenderId:"558093639007",
+  appId: "1:558093639007:web:e2ad823aa34cdfdfb66aea",
 };
 
 // Initialize Firebase
