@@ -40,24 +40,13 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function KomparAppBar() {
+export default function KomparAppBar({ setDark, dark }) {
   const { drawer } = useSelector((state) => ({ ...state }));
-  const [dark, setDark] = useState(true);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
   const history = useNavigate();
-
-  const darkTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: dark ? 'dark' : 'light',
-        },
-      }),
-    [dark]
-  );
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -96,7 +85,7 @@ export default function KomparAppBar() {
   // };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <>
       {user && (
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
@@ -130,6 +119,6 @@ export default function KomparAppBar() {
           <SideList {...{ drawer }} />
         </Box>
       )}
-    </ThemeProvider>
+    </>
   );
 }
