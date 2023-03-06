@@ -27,35 +27,37 @@ const Support = () => {
   };
   return (
     <MainContainer open={drawer}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
-        <Typography variant="h3" component="h3">
-          Manage Users
-        </Typography>
-        <Box sx={{ height: '40px', mt: 2 }}>
-          <Button variant="contained" startIcon={<PersonAddIcon />}>
-            Ajouter un utilisateur
-          </Button>
+      <Box sx={{ height: '100%', width: '100%', pl: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 2 }}>
+          <Typography variant="h3" component="h3">
+            Manage Users
+          </Typography>
+          <Box sx={{ height: '40px', mt: 2 }}>
+            <Button variant="contained" startIcon={<PersonAddIcon />}>
+              Ajouter un utilisateur
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <Box sx={{ height: 400, width: '100%', p: 2 }}>
-        <DataGrid
-          columns={columns}
-          rows={users}
-          getRowId={(row) => row._id}
-          pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 20]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            [`& .${gridClasses.row}`]: {
-              bgcolor: (theme) =>
-                theme.palette.mode === 'light' ? grey[50] : grey[900],
-            },
-          }}
-        ></DataGrid>
+        <Box sx={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+          <DataGrid
+            columns={columns}
+            rows={users}
+            getRowId={(row) => row._id}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 20]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            getRowSpacing={(params) => ({
+              top: params.isFirstVisible ? 0 : 5,
+              bottom: params.isLastVisible ? 0 : 5,
+            })}
+            sx={{
+              [`& .${gridClasses.row}`]: {
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
+          />
+        </Box>
       </Box>
     </MainContainer>
   );
