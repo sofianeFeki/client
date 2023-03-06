@@ -59,7 +59,12 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  GridActionsCellItem,
+  gridClasses,
+} from '@mui/x-data-grid';
 import { styled } from '@mui/material/styles';
 import { MainContainer } from '../../AppBar/Style';
 import { useSelector } from 'react-redux';
@@ -67,6 +72,7 @@ import { Typography } from '@mui/material';
 import { getContractsSav } from '../../../functions/product';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
+import { grey } from '@mui/material/colors';
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -200,31 +206,43 @@ export default function Sav() {
   }, []);
   return (
     <MainContainer open={drawer}>
-      <Box sx={{ display: 'flex', justifyContent: 'start', p: 2 }}>
-        <Typography variant="h3" component="h3">
-          Manage Contracts sav
-        </Typography>
-      </Box>
-      <Box sx={{ height: 520, width: '100%', p: 2 }}>
-        <DataGrid
-          loading={loading}
-          components={{
-            NoRowsOverlay: CustomNoRowsOverlay,
-            Toolbar: GridToolbar,
-          }}
-          disableColumnFilter
-          disableColumnSelector
-          columns={columns}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-          rows={data}
-          getRowId={(row) => row._id}
-          onFilterModelChange={onFilterChange}
-        />
+      <Box sx={{ height: '100%', width: '100%', pl: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'start', py: 2 }}>
+          <Typography variant="h3" component="h3">
+            Manage Contracts sav
+          </Typography>
+        </Box>
+        <Box sx={{ height: 'calc(100vh - 150px)', width: '100%' }}>
+          <DataGrid
+            loading={loading}
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              Toolbar: GridToolbar,
+            }}
+            disableColumnFilter
+            disableColumnSelector
+            columns={columns}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
+            rows={data}
+            getRowId={(row) => row._id}
+            onFilterModelChange={onFilterChange}
+            getRowSpacing={(params) => ({
+              top: params.isFirstVisible ? 0 : 5,
+              bottom: params.isLastVisible ? 0 : 5,
+            })}
+            sx={{
+              [`& .${gridClasses.row}`]: {
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
+          />
+        </Box>
       </Box>
     </MainContainer>
   );
