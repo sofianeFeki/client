@@ -112,23 +112,6 @@ const BackOffice = () => {
 
   return (
     <>
-      <MainContainer open={drawer}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
-          <Typography variant="h3" component="h3">
-            Manage Contracts
-          </Typography>
-          <Box sx={{ height: '40px', mt: 2 }}>
-            <Button
-              variant="outlined"
-              component={Link}
-              to="/admin/contract"
-              startIcon={<CreateNewFolderIcon />}
-            >
-              Inserer un fichier
-            </Button>
-          </Box>
-        </Box>
-      </MainContainer>
       <Box>
         {/* <DataGrid
           components={{ Toolbar: GridToolbar }}
