@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -24,7 +24,7 @@ import {
   SupervisorAccount,
   SupportAgent,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../sevices/firebase';
 import { signOut } from 'firebase/auth';
 import Admin from '../pages/admin';
@@ -78,12 +78,14 @@ const SideList = ({ drawer }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [selectedLink, setSelectedLink] = useState('');
+  const location = useLocation();
   const list = useMemo(
     () => [
       {
         title: 'Admin',
         icon: <Dashboard />,
-        link: 'admin',
+        link: '/admin',
       },
       {
         title: 'Back office',
@@ -138,6 +140,7 @@ const SideList = ({ drawer }) => {
             </IconButton>
           </DrawerHeader>
           <Divider />
+
           <List>
             {list.map((item) => (
               <ListItem
@@ -152,6 +155,7 @@ const SideList = ({ drawer }) => {
                     px: 2.5,
                   }}
                   onClick={() => history(item.link)}
+                  selected={location.pathname === item.link}
                 >
                   <ListItemIcon
                     sx={{
