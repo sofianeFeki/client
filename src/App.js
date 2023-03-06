@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { auth } from './component/sevices/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { currentUser } from './functions/auth';
 import Layout from './component/Layout';
 import RequireAuth from './component/Routes/RequireAuth';
@@ -23,11 +23,14 @@ import BackOffice from './component/pages/backOffice';
 import AdminDashboard from './component/pages/admin';
 import ContractUpdate from './component/pages/admin/ContractUpdate';
 import Sav from './component/pages/Sav.js';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 
 const App = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
   const history = useNavigate();
+
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -53,35 +56,54 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+  const darkTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: dark ? 'dark' : 'light',
+        },
+      }),
+    [dark]
+  );
+
   return (
     <Box>
-      <KomparAppBar />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/login" element={<SignIn />} />
-          <Route element={<RequireAuth allowedRoles={['admin', 'qualite']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/quality" element={<Quality />} />
-            <Route path="/contract/:slug" element={<ContractDetail />} />
+      <ThemeProvider theme={darkTheme}>
+        <KomparAppBar setDark={setDark} dark={dark} />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/login" element={<SignIn />} />
+            <Route
+              element={<RequireAuth allowedRoles={['admin', 'qualite']} />}
+            >
+              <Route path="/" element={<HomePage />} />
+              <Route path="/quality" element={<Quality />} />
+              <Route path="/contract/:slug" element={<ContractDetail />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={['admin', 'wc']} />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/welcome-call" element={<WelcomeCall />} />
+            </Route>
+            <Route
+              element={<RequireAuth allowedRoles={['admin', 'support']} />}
+            >
+              <Route path="/" element={<HomePage />} />
+              <Route path="/support" element={<Support />} />
+            </Route>
+            <Route path="*" element={<Missing />} />
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/contract" element={<ContractCreate />} />
+              <Route path="/back-office" element={<BackOffice />} />
+              <Route
+                path="/contract-update/:slug"
+                element={<ContractUpdate />}
+              />
+              <Route path="/sav" element={<Sav />} />
+            </Route>
           </Route>
-          <Route element={<RequireAuth allowedRoles={['admin', 'wc']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/welcome-call" element={<WelcomeCall />} />
-          </Route>
-          <Route element={<RequireAuth allowedRoles={['admin', 'support']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/support" element={<Support />} />
-          </Route>
-          <Route path="*" element={<Missing />} />
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/contract" element={<ContractCreate />} />
-            <Route path="/back-office" element={<BackOffice />} />
-            <Route path="/contract-update/:slug" element={<ContractUpdate />} />
-            <Route path="/sav" element={<Sav />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </ThemeProvider>
     </Box>
   );
 };
