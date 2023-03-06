@@ -381,7 +381,7 @@ export default function Quality() {
             Manage Contracts quality
           </Typography>
         </Box>
-        <Box sx={{ height: 520, width: '100%' }}>
+        <Box sx={{ height: 'calc(100vh - 150px)' }}>
           <DataGrid
             rows={data}
             columns={colun}
