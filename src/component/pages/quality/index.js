@@ -17,6 +17,7 @@ import {
   useGridApiContext,
   useGridSelector,
   GridActionsCellItem,
+  gridClasses,
 } from '@mui/x-data-grid';
 import Pagination from '@mui/material/Pagination';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,6 +27,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { grey } from '@mui/material/colors';
 
 const SUBMIT_FILTER_STROKE_TIME = 500;
 
@@ -254,7 +256,6 @@ export default function Quality() {
     {
       field: 'actions',
       type: 'actions',
-      width: 200,
       getActions: (params) => [
         <GridActionsCellItem
           icon={<VisibilityIcon />}
@@ -386,41 +387,53 @@ export default function Quality() {
 
   return (
     <MainContainer open={drawer}>
-      <Box sx={{ display: 'flex', justifyContent: 'start', p: 2 }}>
-        <Typography variant="h3" component="h3">
-          Manage Contracts quality
-        </Typography>
-      </Box>
-      <Box sx={{ height: 510, width: '100%', p: 2 }}>
-        <DataGrid
-          rows={data}
-          columns={colun}
-          pagination
-          pageSize={pageSize}
-          rowsPerPageOptions={[pageSize]}
-          rowCount={rowCountState}
-          paginationMode="server"
-          onPageChange={handlePageChange}
-          disableMultipleColumnsFiltering={false}
-          page={page}
-          getRowId={(row) => row._id}
-          loading={loading}
-          filterMode="server"
-          onFilterModelChange={onFilterChange}
-          // filterModel={filterModel}
-          sortingMode="server"
-          onSortModelChange={handleSortModelChange}
-          components={{
-            Footer: CustomFooter,
-            Toolbar: GridToolbar,
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-        />
+      <Box sx={{ height: '100%', width: '100%', pl: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'start', py: 2 }}>
+          <Typography variant="h3" component="h3">
+            Manage Contracts quality
+          </Typography>
+        </Box>
+        <Box sx={{ height: 520, width: '100%' }}>
+          <DataGrid
+            rows={data}
+            columns={colun}
+            pagination
+            pageSize={pageSize}
+            rowsPerPageOptions={[pageSize]}
+            rowCount={rowCountState}
+            paginationMode="server"
+            onPageChange={handlePageChange}
+            disableMultipleColumnsFiltering={false}
+            page={page}
+            getRowId={(row) => row._id}
+            loading={loading}
+            filterMode="server"
+            onFilterModelChange={onFilterChange}
+            // filterModel={filterModel}
+            sortingMode="server"
+            onSortModelChange={handleSortModelChange}
+            components={{
+              Footer: CustomFooter,
+              Toolbar: GridToolbar,
+            }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
+            getRowSpacing={(params) => ({
+              top: params.isFirstVisible ? 0 : 5,
+              bottom: params.isLastVisible ? 0 : 5,
+            })}
+            sx={{
+              [`& .${gridClasses.row}`]: {
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
+          />
+        </Box>
       </Box>
     </MainContainer>
   );
