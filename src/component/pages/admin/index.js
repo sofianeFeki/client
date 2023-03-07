@@ -244,17 +244,18 @@ export default function AdminDashboard() {
   const columns = useMemo(() => [
     { title: 'contratRef', field: 'contratRef', flex: 1.4 },
     { title: 'clientRef ', field: 'clientRef', flex: 1.4 },
-    { title: 'civility', field: 'civility', flex: 0.5 },
-    { title: 'prenom ', field: 'prenom', flex: 1 },
-    { title: 'tel ', field: 'tel', flex: 1 },
     { title: 'partenaire ', field: 'partenaire', flex: 1.3 },
-
     {
-      title: 'dateActivationElec ',
-      field: 'dateActivationElec',
+      title: 'date début',
+      field: 'date_début',
       flex: 1.25,
     },
-    { title: 'comune ', field: 'comune', flex: 1 },
+    { title: 'statut ', field: 'statut', flex: 1 },
+    {
+      title: 'date signature',
+      field: 'date_signature',
+      flex: 1.25,
+    },
     {
       field: 'actions',
       type: 'actions',
