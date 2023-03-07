@@ -79,6 +79,12 @@ export const updateContract = async (slug, values, authtoken) =>
       authtoken,
     },
   });
+export const updateContractData = async (slug, values, authtoken) =>
+  await axios.put(`${API_BASE_URL}/contract/update/data/${slug}`, values, {
+    headers: {
+      authtoken,
+    },
+  });
 export const updateContractSav = async (slug, values, authtoken) =>
   await axios.put(`${API_BASE_URL}/contract/update/sav/${slug}`, values, {
     headers: {
