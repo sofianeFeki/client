@@ -130,7 +130,7 @@ const CalificationWc = () => {
                   onChange={handleCommentChange}
                 />
                 <FormControl fullWidth size="small" sx={{ my: 2 }}>
-                  <InputLabel id="Qualification">Qualification :</InputLabel>
+                  <InputLabel id="Qualification">Qualification </InputLabel>
                   <Select
                     id="Qualification"
                     label="Qualification"
@@ -180,7 +180,7 @@ const CalificationWc = () => {
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>Subscribe</Button>
+          <Button onClick={handleSubmit}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
