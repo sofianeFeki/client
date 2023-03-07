@@ -23,7 +23,7 @@ const AdminRoute = () => {
 
   // const location = useLocation();
 
-  return ok ? <Outlet /> : <h1>you are not authorozied</h1>;
+  return ok ? <Outlet /> : <h1>checking account role and token...</h1>;
 };
 
 export default AdminRoute;
