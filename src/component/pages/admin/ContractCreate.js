@@ -22,39 +22,41 @@ const ContractCreate = () => {
   const columns = useMemo(() => [
     { title: 'contratRef', field: 'contratRef', width: 200 },
     { title: 'clientRef ', field: 'clientRef', width: 200 },
-    { title: 'civility', field: 'civility', width: 80 },
-    { title: 'prenom ', field: 'prenom', width: 100 },
+    { title: 'civility', field: 'Civility', width: 80 },
+    { title: 'prenom ', field: 'Prénom', width: 100 },
+    { title: 'nom ', field: 'Nom', width: 100 },
     { title: 'tel ', field: 'tel', width: 100 },
     { title: 'email ', field: 'email' },
-    { title: 'adresse ', field: 'adresse' },
-    { title: 'codePostal ', field: 'codePostal' },
-    { title: 'comune ', field: 'comune' },
-    { title: 'mensualiteElec ', field: 'mensualiteElec' },
-    { title: 'optionTarifaire ', field: 'optionTarifaire' },
-    { title: 'prixAbonnement ', field: 'prixAbonnement' },
-    { title: 'prixKwhBase ', field: 'prixKwhBase' },
-    { title: 'prixKwhHp ', field: 'prixKwhHp' },
-    { title: 'prixKwhHc ', field: 'prixKwhHc' },
-    { title: 'puissance ', field: 'puissance' },
-    { title: 'partenaire ', field: 'partenaire' },
-
+    { title: 'Adresse ', field: 'Adresse' },
+    { title: 'codePostal ', field: 'CodePostal' },
+    { title: 'comune ', field: 'Commune' },
+    { title: 'energie ', field: 'Énergie', width: 100 },
+    { title: 'Point de livraison', field: 'PDL', width: 100 },
     {
-      title: 'dateActivationElec ',
-      field: 'dateActivationElec',
+      title: 'Puissance du point/Classe',
+      field: 'Puissance',
+      width: 100,
+    },
+    { title: 'offre', field: 'offre', width: 100 },
+    { title: 'statut', field: 'statut', width: 100 },
+    { title: 'Nom du partenaire', field: 'partenaire', width: 100 },
+    {
+      title: 'date de début',
+      field: 'date_début',
       renderCell: (params) =>
-        moment(params.row.dateActivationElec, 'DD/MM/YYYY HH:mm').format(
+        moment(params.row.date_début, 'DD/MM/YYYY HH:mm').format(
           'DD/MM/YYYY HH:mm'
         ),
     },
-    { title: 'mensualiteGaz ', field: 'mensualiteGaz' },
     {
-      title: 'dateActivationGaz ',
-      field: 'dateActivationGaz',
+      title: 'date de la signature',
+      field: 'date_signature',
       renderCell: (params) =>
-        moment(params.row.dateActivationElec, 'DD/MM/YYYY HH:mm').format(
+        moment(params.row.date_signature, 'DD/MM/YYYY HH:mm').format(
           'DD/MM/YYYY HH:mm'
         ),
     },
+    { mensualité: 'mensualité', field: 'mensualité', width: 100 },
   ]);
   const getExention = (file) => {
     const parts = file.name.split('.');
@@ -68,8 +70,8 @@ const ContractCreate = () => {
       let rowData = {};
       row.forEach((element, index) => {
         if (
-          headers[index].includes('dateActivationElec') ||
-          headers[index].includes('dateActivationGaz')
+          headers[index].includes('date_début') ||
+          headers[index].includes('date_signature')
         ) {
           // check if the header contains "date"
           rowData[headers[index]] = moment(
