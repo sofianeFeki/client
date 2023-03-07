@@ -155,17 +155,18 @@ export default function WelcomeCall() {
   const columns = useMemo(() => [
     { title: 'contratRef', field: 'contratRef', flex: 1.4 },
     { title: 'clientRef ', field: 'clientRef', flex: 1.4 },
-    { title: 'civility', field: 'civility', flex: 0.5 },
-    { title: 'prenom ', field: 'prenom', flex: 1 },
-    { title: 'tel ', field: 'tel', flex: 1 },
+    { title: 'Civility', field: 'Civility', flex: 0.5 },
+    { title: 'Prénom ', field: 'Prénom', flex: 1 },
+    { title: 'Nom ', field: 'Nom', flex: 1 },
+    { title: 'tel', field: 'tel', flex: 1 },
+
     { title: 'partenaire ', field: 'partenaire', flex: 1.3 },
 
     {
-      title: 'dateActivationElec ',
-      field: 'dateActivationElec',
+      title: 'date_signature ',
+      field: 'date_signature',
       flex: 1.25,
     },
-    { title: 'comune ', field: 'comune', flex: 1 },
     {
       field: 'actions',
       type: 'actions',
