@@ -359,14 +359,14 @@ const Calification = () => {
               <Box sx={{ my: 2 }}>
                 <TextField
                   fullWidth
-                  label="Commentaire:"
+                  label="Commentaire"
                   id="Commentaire"
                   multiline
                   value={comment}
                   onChange={handleCommentChange}
                 />
                 <FormControl fullWidth size="small" sx={{ my: 2 }}>
-                  <InputLabel id="Qualification">Qualification :</InputLabel>
+                  <InputLabel id="Qualification">Qualification </InputLabel>
                   <Select
                     id="Qualification"
                     label="Qualification"
@@ -389,7 +389,7 @@ const Calification = () => {
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>Subscribe</Button>
+          <Button onClick={handleSubmit}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
