@@ -1,18 +1,36 @@
-import { Button, FormGroup, MenuItem, Select, TextField } from '@mui/material';
+import {
+  Button,
+  FormGroup,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Box,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getContract, updateContract } from '../../../functions/product';
+import { getContract, updateContractData } from '../../../functions/product';
 import { MainContainer } from '../../AppBar/Style';
 
 const intialState = {
   contratRef: '',
   clientRef: '',
-  civility: '',
-  prenom: '',
+  Civility: '',
+  Prénom: '',
+  Nom: '',
   tel: '',
   email: '',
-  quality: { qualification: '' },
+  Adresse: '',
+  CodePostal: '',
+  Commune: '',
+  Énergie: '',
+  PDL: '',
+  Puissance: '',
+  offre: '',
+  statut: '',
+  partenaire: '',
+  mensualité: '',
 };
 
 const ContractUpdate = () => {
@@ -22,8 +40,25 @@ const ContractUpdate = () => {
 
   const [values, setValues] = useState(intialState);
   const [loading, setLoading] = useState(false);
-  const { contratRef, clientRef, civility, prenom, tel, email, quality } =
-    values;
+  const {
+    contratRef,
+    clientRef,
+    Civility,
+    Prénom,
+    Nom,
+    tel,
+    email,
+    Adresse,
+    CodePostal,
+    Commune,
+    Énergie,
+    PDL,
+    Puissance,
+    offre,
+    statut,
+    partenaire,
+    mensualité,
+  } = values;
 
   useEffect(() => {
     loadContract();
@@ -40,7 +75,7 @@ const ContractUpdate = () => {
     e.preventDefault();
     setLoading(true);
 
-    updateContract(slug, values, user.token)
+    updateContractData(slug, values, user.token)
       .then((res) => {
         setLoading(false);
         history('/admin');
@@ -54,20 +89,13 @@ const ContractUpdate = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    if (name === 'quality') {
-      setValues({
-        ...values,
-        quality: { ...values.quality, qualification: value },
-      });
-    } else {
-      setValues({ ...values, [name]: value });
-    }
+    setValues({ ...values, [name]: value });
   };
 
   return (
     <MainContainer open={drawer}>
       <form onSubmit={handleSubmit}>
-        <FormGroup>
+        <FormGroup sx={{ p: 2 }}>
           <TextField
             label="contratRef"
             type={'text'}
@@ -77,7 +105,6 @@ const ContractUpdate = () => {
             size="small"
             value={contratRef}
             onChange={handleChange}
-            required
           />
           <TextField
             label="clientRef"
@@ -88,29 +115,106 @@ const ContractUpdate = () => {
             size="small"
             value={clientRef}
             onChange={handleChange}
-            required
           />{' '}
           <TextField
-            label="civility"
+            label="Énergie"
             type={'text'}
-            name="civility"
+            name="Énergie"
             variant="outlined"
             sx={{ mb: 2, width: '40%' }}
             size="small"
-            value={civility}
+            value={Énergie}
             onChange={handleChange}
-            required
           />{' '}
           <TextField
-            label="prenom"
+            label="Puissance"
             type={'text'}
-            name="prenom"
+            name="Puissance"
             variant="outlined"
             sx={{ mb: 2, width: '40%' }}
             size="small"
-            value={prenom}
+            value={Puissance}
             onChange={handleChange}
-            required
+          />{' '}
+          <TextField
+            label="offre"
+            type={'text'}
+            name="offre"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={offre}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="statut"
+            type={'text'}
+            name="statut"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={statut}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="partenaire"
+            type={'text'}
+            name="partenaire"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={partenaire}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="point de livraison"
+            type={'text'}
+            name="PDL"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={PDL}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="mensualité"
+            type={'text'}
+            name="mensualité"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={mensualité}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="Civility"
+            type={'text'}
+            name="Civility"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={Civility}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="Prénom"
+            type={'text'}
+            name="Prénom"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={Prénom}
+            onChange={handleChange}
+          />{' '}
+          <TextField
+            label="Nom"
+            type={'text'}
+            name="Prénom"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={Nom}
+            onChange={handleChange}
           />{' '}
           <TextField
             label="tel"
@@ -121,7 +225,6 @@ const ContractUpdate = () => {
             size="small"
             value={tel}
             onChange={handleChange}
-            required
           />{' '}
           <TextField
             label="email"
@@ -132,24 +235,43 @@ const ContractUpdate = () => {
             size="small"
             value={email}
             onChange={handleChange}
-            required
           />
-          <Select
-            name="quality"
-            value={quality.qualification}
-            onChange={handleChange}
+          <TextField
+            label="Adresse"
+            type={'text'}
+            name="Adresse"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
             size="small"
-          >
-            {['conforme', 'non-conforme', 'sav', 'annulation'].map((q) => (
-              <MenuItem key={q} value={q}>
-                {q}
-              </MenuItem>
-            ))}
-          </Select>
+            value={Adresse}
+            onChange={handleChange}
+          />
+          <TextField
+            label="CodePostal"
+            type={'text'}
+            name="CodePostal"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={CodePostal}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Commune"
+            type={'text'}
+            name="Commune"
+            variant="outlined"
+            sx={{ mb: 2, width: '40%' }}
+            size="small"
+            value={Commune}
+            onChange={handleChange}
+          />
         </FormGroup>
-        <Button type="submit" variant="contained">
-          submit
-        </Button>
+        <Box sx={{ px: 2 }}>
+          <Button type="submit" variant="contained">
+            save
+          </Button>
+        </Box>
       </form>
     </MainContainer>
   );
