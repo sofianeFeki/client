@@ -15,6 +15,8 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
+import Toolbar from '@mui/material/Toolbar';
+import Grid from '@mui/material/Grid';
 
 function createData(name, value) {
   return { name, value };
@@ -24,23 +26,29 @@ const ContractDetail = () => {
   const { drawer } = useSelector((state) => ({ ...state }));
 
   const [data, setData] = useState([]);
-  const rows = [
+  const rowsContract = [
     createData('Ref contrat', data.contratRef),
     createData('Ref client', data.clientRef),
-    createData('contact', data.prenom),
-    createData('Tél', data.tel),
-    createData('email', data.email),
+    createData('Énergie', data.Énergie),
+    createData('point de livraison', data.PDL),
     createData('partenaire', data.partenaire),
-    createData('data se signature', data.dateActivationElec),
-    createData('option tarifaire', 375, 0.0),
-    createData(
-      'Adresse de consommation',
-      data.adresse + ' ' + data.codePostal + ' ' + data.comune
-    ),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
+    createData('date début', data.date_début),
+    createData('data de signature', data.date_signature),
+    createData('mensualité', data.mensualité),
+    createData('statut', data.statut),
+    createData('Puissance', data.Puissance),
+    createData('offre', data.offre),
+  ];
+
+  const rowsClient = [
+    createData('Civility', data.Civility),
+    createData('Prénom', data.Prénom),
+    createData('Nom', data.Nom),
+    createData('tel', data.tel),
+    createData('email', data.email),
+    createData('Adresse', data.Adresse),
+    createData('CodePostal', data.CodePostal),
+    createData('Commune', data.Commune),
   ];
 
   let { slug } = useParams();
@@ -64,20 +72,41 @@ const ContractDetail = () => {
             <CalificationSav />
           </Stack>
         </Box>
-        <TableContainer component={Paper} sx={{ width: '50%', p: 2 }}>
-          <Table>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="left">{row.value}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+
+        <Grid container spacing={2} p={2}>
+          <Grid item xs={6}>
+            <TableContainer component={Paper} elevation={4}>
+              <Table>
+                <TableBody>
+                  {rowsContract.map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="left">{row.value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid item xs={6}>
+            <TableContainer component={Paper} elevation={4}>
+              <Table>
+                <TableBody>
+                  {rowsClient.map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="left">{row.value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
       </MainContainer>
     </div>
   );
