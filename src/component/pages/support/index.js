@@ -6,17 +6,29 @@ import { MainContainer } from '../../AppBar/Style';
 import { useSelector } from 'react-redux';
 import { grey } from '@mui/material/colors';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import moment from 'moment';
 
 const Support = () => {
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(5);
   const { drawer } = useSelector((state) => ({ ...state }));
   const columns = useMemo(() => [
     { field: '_id', headerName: 'Id', width: 220 },
     { field: 'name', headerName: 'Name', width: 170 },
     { field: 'email', headerName: 'Email', width: 200 },
     { field: 'role', headerName: 'Role', width: 100 },
-    { field: 'createdAt', headerName: 'created At', width: 200 },
+    {
+      field: 'createdAt',
+      headerName: 'created At',
+      width: 200,
+      renderCell: (params) => moment(params.value).format('DD/MM/YYYY HH:mm'),
+      type: 'date',
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'last conextion',
+      width: 200,
+      renderCell: (params) => moment(params.value).format('DD/MM/YYYY HH:mm'),
+    },
   ]);
 
   useEffect(() => {
@@ -43,9 +55,6 @@ const Support = () => {
             columns={columns}
             rows={users}
             getRowId={(row) => row._id}
-            pageSize={pageSize}
-            rowsPerPageOptions={[5, 10, 20]}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             getRowSpacing={(params) => ({
               top: params.isFirstVisible ? 0 : 5,
               bottom: params.isLastVisible ? 0 : 5,
