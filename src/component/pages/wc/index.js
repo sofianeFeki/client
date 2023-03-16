@@ -61,9 +61,12 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import {
   DataGrid,
-  GridToolbar,
   GridActionsCellItem,
   gridClasses,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+  GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 import { styled } from '@mui/material/styles';
 import { MainContainer } from '../../AppBar/Style';
@@ -73,6 +76,21 @@ import { getWcContract } from '../../../functions/product';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
+import moment from 'moment';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
+      <Box>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+      </Box>
+      <Box>
+        <GridToolbarQuickFilter />
+      </Box>
+    </GridToolbarContainer>
+  );
+}
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -147,25 +165,28 @@ function CustomNoRowsOverlay() {
   );
 }
 
+// const initialState = JSON.parse(localStorage.getItem('quickFilterValue')) || [];
+
 export default function WelcomeCall() {
   const { drawer } = useSelector((state) => ({ ...state }));
   const [quickFilterValue, setQuickFilterValue] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const columns = useMemo(() => [
-    { title: 'contratRef', field: 'contratRef', flex: 1.4 },
-    { title: 'clientRef ', field: 'clientRef', flex: 1.4 },
-    { title: 'Civility', field: 'Civility', flex: 0.5 },
-    { title: 'Prénom ', field: 'Prénom', flex: 1 },
-    { title: 'Nom ', field: 'Nom', flex: 1 },
-    { title: 'tel', field: 'tel', flex: 1 },
-
-    { title: 'partenaire ', field: 'partenaire', flex: 1.3 },
+    { headerName: 'clientRef ', field: 'clientRef', flex: 1.4 },
+    { headerName: 'Civility', field: 'Civility', flex: 0.7 },
+    { headerName: 'Prénom ', field: 'Prénom', flex: 1 },
+    { headerName: 'Nom ', field: 'Nom', flex: 1 },
+    { headerName: 'tel', field: 'tel', flex: 1 },
+    { headerName: 'Énergie', field: 'Énergie', flex: 1 },
+    { headerName: 'partenaire ', field: 'partenaire', flex: 1.3 },
 
     {
-      title: 'date_signature ',
+      headerName: 'date signature ',
       field: 'date_signature',
       flex: 1.25,
+      renderCell: (params) => moment(params.value).format('DD/MM/YYYY HH:mm'),
+      type: 'date',
     },
     {
       field: 'actions',
@@ -176,11 +197,15 @@ export default function WelcomeCall() {
           icon={<VisibilityIcon />}
           label="open"
           component={Link}
-          to={`/contract/${params.row.clientRef}`}
+          to={`/contract/${params.row.contratRef}`}
         />,
       ],
     },
   ]);
+
+  // useEffect(() => {
+  //   localStorage.setItem('quickFilterValue', JSON.stringify(quickFilterValue));
+  // }, [quickFilterValue]);
 
   const loadData = () => {
     setLoading(true);
@@ -215,20 +240,13 @@ export default function WelcomeCall() {
         </Box>
         <Box sx={{ height: 'calc(100vh - 150px)', width: '100%' }}>
           <DataGrid
+            disableColumnFilter
             loading={loading}
             components={{
               NoRowsOverlay: CustomNoRowsOverlay,
-              Toolbar: GridToolbar,
+              Toolbar: CustomToolbar,
             }}
-            disableColumnFilter
-            disableColumnSelector
             columns={columns}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
-              },
-            }}
             rows={data}
             getRowId={(row) => row._id}
             onFilterModelChange={onFilterChange}
@@ -240,6 +258,14 @@ export default function WelcomeCall() {
               [`& .${gridClasses.row}`]: {
                 bgcolor: (theme) =>
                   theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
+            initialState={{
+              filter: {
+                filterModel: {
+                  items: [],
+                  quickFilterValues: [quickFilterValue[0]],
+                },
               },
             }}
           />
