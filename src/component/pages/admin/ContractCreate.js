@@ -1,48 +1,62 @@
 import React, { useMemo, useState } from 'react';
 import * as XLSX from 'xlsx/xlsx.mjs';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { createContract } from '../../../functions/product';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { MainContainer } from '../../AppBar/Style';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import CancelIcon from '@mui/icons-material/Cancel';
 import moment from 'moment/moment';
+import { toast } from 'react-toastify';
+import { LoadingButton } from '@mui/lab';
+import SaveIcon from '@mui/icons-material/Save';
+import { grey } from '@mui/material/colors';
 
 const EXTENSIONS = ['xlsx', 'xls', 'csv'];
 
 const ContractCreate = () => {
   const history = useNavigate();
   const [colDefs, setColDefs] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
-  const [value, setValue] = useState();
   const { user, drawer } = useSelector((state) => ({ ...state }));
   const columns = useMemo(() => [
     { title: 'contratRef', field: 'contratRef', width: 200 },
     { title: 'clientRef ', field: 'clientRef', width: 200 },
-    { title: 'civility', field: 'Civility', width: 80 },
-    { title: 'prenom ', field: 'Prénom', width: 100 },
-    { title: 'nom ', field: 'Nom', width: 100 },
-    { title: 'tel ', field: 'tel', width: 100 },
-    { title: 'email ', field: 'email' },
-    { title: 'Adresse ', field: 'Adresse' },
-    { title: 'codePostal ', field: 'CodePostal' },
-    { title: 'comune ', field: 'Commune' },
+    { title: 'civility', field: 'Civility', width: 80, editable: true },
+    { title: 'prenom ', field: 'Prénom', width: 100, editable: true },
+    { title: 'nom ', field: 'Nom', width: 100, editable: true },
+    { title: 'tel ', field: 'tel', width: 100, editable: true },
+    { title: 'email ', field: 'email', editable: true },
+    { title: 'Adresse ', field: 'Adresse', editable: true },
+    { title: 'codePostal ', field: 'CodePostal', editable: true },
+    { title: 'comune ', field: 'Commune', editable: true },
     { title: 'energie ', field: 'Énergie', width: 100 },
-    { title: 'Point de livraison', field: 'PDL', width: 100 },
+    { title: 'Point de livraison', field: 'PDL', width: 100, editable: true },
     {
       title: 'Puissance du point/Classe',
       field: 'Puissance',
       width: 100,
+      editable: true,
     },
-    { title: 'offre', field: 'offre', width: 100 },
-    { title: 'statut', field: 'statut', width: 100 },
-    { title: 'Nom du partenaire', field: 'partenaire', width: 100 },
+    { title: 'offre', field: 'offre', width: 100, editable: true },
+    { title: 'statut', field: 'statut', width: 100, editable: true },
+    {
+      title: 'Nom du partenaire',
+      field: 'partenaire',
+      width: 100,
+      editable: true,
+    },
     {
       title: 'date de début',
       field: 'date_début',
+      editable: true,
+      type: 'date',
+
       renderCell: (params) =>
         moment(params.row.date_début, 'DD/MM/YYYY HH:mm').format(
           'DD/MM/YYYY HH:mm'
@@ -51,12 +65,20 @@ const ContractCreate = () => {
     {
       title: 'date de la signature',
       field: 'date_signature',
+      editable: true,
+      type: 'date',
+
       renderCell: (params) =>
         moment(params.row.date_signature, 'DD/MM/YYYY HH:mm').format(
           'DD/MM/YYYY HH:mm'
         ),
     },
-    { mensualité: 'mensualité', field: 'mensualité', width: 100 },
+    {
+      mensualité: 'mensualité',
+      field: 'mensualité',
+      width: 100,
+      editable: true,
+    },
   ]);
   const getExention = (file) => {
     const parts = file.name.split('.');
@@ -88,7 +110,7 @@ const ContractCreate = () => {
   };
 
   const importExcel = (e) => {
-    setLoading(true);
+    setUploadLoading(true);
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -105,14 +127,23 @@ const ContractCreate = () => {
       //console.log(fileData)
       const headers = fileData[0];
 
-      setColDefs(columns);
+      const hasClientRef = headers.includes('contratRef');
+      if (hasClientRef) {
+        setColDefs(columns);
 
-      //removing header
-      fileData.splice(0, 1);
+        //removing header
+        fileData.splice(0, 1);
 
-      setData(convertToJson(headers, fileData));
+        setData(convertToJson(headers, fileData));
 
-      setLoading(false);
+        setUploadLoading(false);
+      } else {
+        setData([]);
+        setUploadLoading(false);
+        toast.error(
+          'The uploaded Excel file does not contain the required contratRef field. Please select a different file that contains the required field and try again.'
+        );
+      }
     };
 
     if (file) {
@@ -120,6 +151,7 @@ const ContractCreate = () => {
         reader.readAsBinaryString(file);
       } else {
         alert('Invalid file input, Select Excel, CSV file');
+        setUploadLoading(false);
       }
     } else {
       setData([]);
@@ -136,6 +168,7 @@ const ContractCreate = () => {
         //console.log(res);
         setLoading(false);
         window.alert('Add New Data To db');
+        setLoading(false);
         //window.location.reload();
         history('/back-office');
       })
@@ -145,42 +178,79 @@ const ContractCreate = () => {
       });
   };
 
+  const handleReset = () => {
+    setData([]);
+  };
+
   return (
     <MainContainer open={drawer}>
-      {JSON.stringify(data)}
       <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
           <Typography variant="h3" component="h3">
             Manage Contracts
           </Typography>
           <Stack direction="row" spacing={2} sx={{ height: '40px', mt: 2 }}>
-            <Button
+            {data && data.length ? (
+              <Button
+                variant="outlined"
+                component="label"
+                startIcon={<CancelIcon />}
+                onClick={handleReset}
+              >
+                Reset
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                component="label"
+                startIcon={<UploadFileIcon />}
+                disabled={uploadLoading}
+              >
+                importer
+                <input hidden type="file" onChange={importExcel} />
+              </Button>
+            )}
+
+            {/* <LoadingButton
+              loading={loading}
+              loadingPosition="start"
               variant="outlined"
-              component="label"
               startIcon={<UploadFileIcon />}
-              disabled={loading}
             >
               importer
               <input hidden type="file" onChange={importExcel} />
-            </Button>
-            <Button
+            </LoadingButton> */}
+            <LoadingButton
               variant="contained"
               type="submit"
-              startIcon={<UploadFileIcon />}
+              startIcon={<SaveIcon />}
               onClick={handleSubmit}
-              disabled={loading}
+              loading={loading}
+              loadingPosition="start"
+              disabled={!data.length}
             >
               Enregistrer
-            </Button>
+            </LoadingButton>
           </Stack>
         </Box>
 
-        <Box sx={{ height: 400, width: '100%', p: 2 }}>
+        <Box sx={{ height: 'calc(100vh - 150px)', width: '100%', p: 2 }}>
           <DataGrid
             title="Olympic Data"
             columns={columns}
-            rows={data || []}
+            rows={data}
             getRowId={(row) => row.contratRef}
+            loading={uploadLoading}
+            getRowSpacing={(params) => ({
+              top: params.isFirstVisible ? 0 : 5,
+              bottom: params.isLastVisible ? 0 : 5,
+            })}
+            sx={{
+              [`& .${gridClasses.row}`]: {
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
           />
         </Box>
       </form>
