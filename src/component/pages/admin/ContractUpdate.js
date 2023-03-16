@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getContract, updateContractData } from '../../../functions/product';
 import { MainContainer } from '../../AppBar/Style';
+import { toast } from 'react-toastify';
 
 const intialState = {
   contratRef: '',
@@ -75,7 +76,32 @@ const ContractUpdate = () => {
     e.preventDefault();
     setLoading(true);
 
-    updateContractData(slug, values, user.token)
+    toast
+      .promise(updateContractData(slug, values, user.token), {
+        pending: {
+          render() {
+            return 'Updating Contract...';
+          },
+          icon: '🔄',
+          // You can also set the autoClose option to false to keep the toast open
+          // while the Promise is pending.
+        },
+        success: {
+          render() {
+            return 'Contract Updated Successfully!';
+          },
+          // other options
+          icon: '👍',
+        },
+        error: {
+          render({ data }) {
+            // When the Promise rejects, data will contain the error
+            return `Error: ${data.message}`;
+          },
+          // other options
+          icon: '❌',
+        },
+      })
       .then((res) => {
         setLoading(false);
         history('/admin');
@@ -209,7 +235,7 @@ const ContractUpdate = () => {
           <TextField
             label="Nom"
             type={'text'}
-            name="Prénom"
+            name="Nom"
             variant="outlined"
             sx={{ mb: 2, width: '40%' }}
             size="small"
