@@ -26,6 +26,7 @@ import {
 import { getContract, updateContractSav } from '../../../functions/product';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function PaperComponent(props) {
   return (
@@ -72,7 +73,32 @@ const CalificationSav = () => {
     };
 
     console.log(values);
-    updateContractSav(slug, values, user.token)
+    toast
+      .promise(updateContractSav(slug, values, user.token), {
+        pending: {
+          render() {
+            return 'Updating Contract...';
+          },
+          icon: '🔄',
+          // You can also set the autoClose option to false to keep the toast open
+          // while the Promise is pending.
+        },
+        success: {
+          render() {
+            return 'Contract Updated Successfully!';
+          },
+          // other options
+          icon: '👍',
+        },
+        error: {
+          render({ data }) {
+            // When the Promise rejects, data will contain the error
+            return `Error: ${data.message}`;
+          },
+          // other options
+          icon: '❌',
+        },
+      })
       .then((res) => {
         if (user.role === 'admin') {
           history('/admin');
@@ -132,9 +158,9 @@ const CalificationSav = () => {
                     onChange={handleQualificationChange}
                   >
                     <MenuItem value={'non-qualifié'}>non-qualifié</MenuItem>
-                    <MenuItem value={'Conforme'}>validé</MenuItem>
-                    <MenuItem value={'Non_conforme'}>A relancer</MenuItem>
-                    <MenuItem value={'SAV'}>Annulation</MenuItem>
+                    <MenuItem value={'validé'}>validé</MenuItem>
+                    <MenuItem value={'A_relancer'}>A relancer</MenuItem>
+                    <MenuItem value={'annulation'}>Annulation</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
