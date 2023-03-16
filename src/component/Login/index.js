@@ -31,9 +31,7 @@ function Copyright(props) {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+      komparDev Service {''}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -62,17 +60,20 @@ export default function SignIn() {
     if (res.data.role === 'admin') {
       history('/admin');
     }
-    if (res.data.role === '/quality') {
-      history('/qualite');
+    if (res.data.role === 'quality') {
+      history('/quality');
     }
     if (res.data.role === 'wc') {
       history('/welcome-call');
     }
-    if (res.data.role === 'back_office') {
-      history('bacl_office/dashboard');
+    if (res.data.role === 'backOffice') {
+      history('back-office');
     }
     if (res.data.role === 'support') {
       history('/support');
+    }
+    if (res.data.role === 'sav') {
+      history('/sav');
     }
   };
 
@@ -127,7 +128,7 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -187,13 +188,13 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account ? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 6, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
