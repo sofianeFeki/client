@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
+import moment from 'moment';
 
 function createData(name, value) {
   return { name, value };
@@ -32,8 +33,14 @@ const ContractDetail = () => {
     createData('Énergie', data.Énergie),
     createData('point de livraison', data.PDL),
     createData('partenaire', data.partenaire),
-    createData('date début', data.date_début),
-    createData('data de signature', data.date_signature),
+    createData(
+      'date début',
+      moment(data.date_début).format('DD/MM/YYYY HH:mm')
+    ),
+    createData(
+      'data de signature',
+      moment(data.date_signature).format('DD/MM/YYYY HH:mm')
+    ),
     createData('mensualité', data.mensualité),
     createData('statut', data.statut),
     createData('Puissance', data.Puissance),
