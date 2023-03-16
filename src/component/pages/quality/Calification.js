@@ -26,6 +26,7 @@ import {
 import { getContract, updateContract } from '../../../functions/product';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function PaperComponent(props) {
   return (
@@ -141,8 +142,33 @@ const Calification = () => {
       comment: comment,
     };
 
-    console.log(values);
-    updateContract(slug, values, user.token)
+    // console.log(values);
+    toast
+      .promise(updateContract(slug, values, user.token), {
+        pending: {
+          render() {
+            return 'Updating Contract...';
+          },
+          icon: '🔄',
+          // You can also set the autoClose option to false to keep the toast open
+          // while the Promise is pending.
+        },
+        success: {
+          render() {
+            return 'Contract Updated Successfully!';
+          },
+          // other options
+          icon: '👍',
+        },
+        error: {
+          render({ data }) {
+            // When the Promise rejects, data will contain the error
+            return `Error: ${data.message}`;
+          },
+          // other options
+          icon: '❌',
+        },
+      })
       .then((res) => {
         if (user.role === 'admin') {
           history('/admin');
