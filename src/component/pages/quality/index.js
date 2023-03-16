@@ -1,174 +1,47 @@
 import { MainContainer } from '../../AppBar/Style';
 import { useSelector } from 'react-redux';
-import { DataGrid } from '@mui/x-data-grid';
 import {
   qualityContractsPaginationCursor,
   getContractsFilters,
-  removeContract,
 } from '../../../functions/product';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { Button, TextField, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
-  GridToolbarQuickFilter,
-  GridToolbarContainer,
-  GridToolbar,
+  DataGrid,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
   useGridSelector,
   GridActionsCellItem,
   gridClasses,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 import Pagination from '@mui/material/Pagination';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import SyncIcon from '@mui/icons-material/Sync';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 
-const SUBMIT_FILTER_STROKE_TIME = 500;
-
-function InputNumberInterval(props) {
-  const { item, applyValue, focusElementRef = null } = props;
-
-  const filterTimeout = useRef();
-  const [filterValueState, setFilterValueState] = useState([
-    item.value ? new Date(item.value[0]) : undefined,
-    item.value ? new Date(item.value[1]) : undefined,
-  ]);
-  const [applying, setIsApplying] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(filterTimeout.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const itemValue = item.value ?? [undefined, undefined];
-    setFilterValueState(itemValue);
-  }, [item.value]);
-
-  const updateFilterValue = (startDate, endDate) => {
-    clearTimeout(filterTimeout.current);
-    const startDateObj = moment(startDate, 'DD/MM/YYYY').toDate();
-    const endDateObj = moment(endDate, 'DD/MM/YYYY').toDate();
-    setFilterValueState([
-      moment(startDateObj).format('YYYY/MM/DD'),
-      moment(endDateObj).format('YYYY/MM/DD'),
-    ]);
-
-    console.log(filterValueState);
-
-    setIsApplying(true);
-    filterTimeout.current = setTimeout(() => {
-      setIsApplying(false);
-      applyValue({ ...item, value: [startDateObj, endDateObj] });
-      console.log(applyValue);
-    }, SUBMIT_FILTER_STROKE_TIME);
-  };
-  const handleUpperFilterChange = (event) => {
-    const newUpperBound = event.target.value;
-    updateFilterValue(filterValueState[0], newUpperBound);
-  };
-  const handleLowerFilterChange = (event) => {
-    const newLowerBound = event.target.value;
-    updateFilterValue(newLowerBound, filterValueState[1]);
-  };
-
+function CustomToolbar() {
   return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        flexDirection: 'row',
-        alignItems: 'end',
-        height: 48,
-        pl: '20px',
-        width: 300,
-      }}
-    >
-      <TextField
-        name="lower-bound-input"
-        placeholder="From"
-        label="From"
-        variant="standard"
-        // value={Date(filterValueState[0])}
-        onChange={handleLowerFilterChange}
-        type="date"
-        inputRef={focusElementRef}
-        sx={{ mr: 2 }}
-      />
-      <TextField
-        name="upper-bound-input"
-        placeholder="To"
-        label="To"
-        variant="standard"
-        //value={Date(filterValueState[1])}
-        onChange={handleUpperFilterChange}
-        type="date"
-        InputProps={applying ? { endAdornment: <SyncIcon /> } : {}}
-      />
-    </Box>
+    <GridToolbarContainer sx={{ justifyContent: 'space-between' }}>
+      <Box>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+      </Box>
+      <Box>
+        <GridToolbarQuickFilter />
+      </Box>
+    </GridToolbarContainer>
   );
 }
 
-InputNumberInterval.propTypes = {
-  applyValue: PropTypes.func.isRequired,
-  focusElementRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({
-      current: PropTypes.any.isRequired,
-    }),
-  ]),
-  item: PropTypes.shape({
-    /**
-     * The column from which we want to filter the rows.
-     */
-    columnField: PropTypes.string.isRequired,
-    /**
-     * Must be unique.
-     * Only useful when the model contains several items.
-     */
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    /**
-     * The name of the operator we want to apply.
-     * Will become required on `@mui/x-data-grid@6.X`.
-     */
-    operatorValue: PropTypes.string,
-    /**
-     * The filtering value.
-     * The operator filtering function will decide for each row if the row values is correct compared to this value.
-     */
-    value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-  }).isRequired,
-};
-
-const quantityOnlyOperators = [
-  {
-    label: 'Between',
-    value: 'between',
-    getApplyFilterFn: (filterItem) => {
-      if (!Array.isArray(filterItem.value) || filterItem.value.length !== 2) {
-        return null;
-      }
-      if (filterItem.value[0] == null || filterItem.value[1] == null) {
-        return null;
-      }
-
-      return ({ value }) => {
-        return (
-          value !== null &&
-          filterItem.value[0] <= value &&
-          value <= filterItem.value[1]
-        );
-      };
-    },
-    InputComponent: InputNumberInterval,
-  },
-];
+// const initialState = JSON.parse(localStorage.getItem('quickFilterValue')) || [];
 
 export default function Quality() {
   const { drawer, user } = useSelector((state) => ({ ...state }));
@@ -183,16 +56,6 @@ export default function Quality() {
   const [filterOptions, setFilterOptions] = useState([]);
   const [quickFilterValue, setQuickFilterValue] = useState([]);
   const [sortOptions, setSortOptions] = useState({});
-  // const [filterModel, setFilterModel] = useState({
-  //   items: [
-  //     // {
-  //     //   id: 1,
-  //     //   columnField: 'email',
-  //     //   //value: [5000, 15000],
-  //     //   operatorValue: 'between',
-  //     // },
-  //   ],
-  // });
 
   const CustomFooter = () => {
     const apiRef = useGridApiContext();
@@ -219,7 +82,7 @@ export default function Quality() {
 
   const queryOptions = useMemo(
     () => ({
-      cursor: mapPageToNextCursor.current[page],
+      page: page,
       pageSize: pageSize,
       //  sortOptions: sortOptions,
     }),
@@ -240,19 +103,20 @@ export default function Quality() {
   }, []);
 
   const columns = useMemo(() => [
-    { title: 'contratRef', field: 'contratRef', flex: 1.4 },
-    { title: 'clientRef ', field: 'clientRef', flex: 1.4 },
-    { title: 'Civility', field: 'Civility', flex: 0.5 },
-    { title: 'Prénom ', field: 'Prénom', flex: 1 },
-    { title: 'Nom ', field: 'Nom', flex: 1 },
-    { title: 'tel', field: 'tel', flex: 1 },
-
-    { title: 'partenaire ', field: 'partenaire', flex: 1.3 },
+    { headerName: 'clientRef ', field: 'clientRef', flex: 1.4 },
+    { headerName: 'Civility', field: 'Civility', flex: 0.7 },
+    { headerName: 'Prénom ', field: 'Prénom', flex: 1 },
+    { headerName: 'Nom ', field: 'Nom', flex: 1 },
+    { headerName: 'tel', field: 'tel', flex: 1 },
+    { headerName: 'Énergie', field: 'Énergie', flex: 1 },
+    { headerName: 'partenaire ', field: 'partenaire', flex: 1.3 },
 
     {
-      title: 'date_signature ',
+      headerName: 'date signature ',
       field: 'date_signature',
       flex: 1.25,
+      renderCell: (params) => moment(params.value).format('DD/MM/YYYY HH:mm'),
+      type: 'date',
     },
     {
       field: 'actions',
@@ -263,68 +127,39 @@ export default function Quality() {
           icon={<VisibilityIcon />}
           label="open"
           component={Link}
-          to={`/contract/${params.row.clientRef}`}
+          to={`/contract/${params.row.contratRef}`}
           //onClick={() => console.log(params.row.clientRef)}
         />,
       ],
     },
   ]);
 
-  const colun = useMemo(() => {
-    const newColumns = [...columns];
-
-    if (newColumns.length > 0) {
-      const index = newColumns.findIndex(
-        (col) => col.field === 'dateActivationElec'
-      );
-      const quantityColumn = newColumns[index];
-
-      newColumns[index] = {
-        ...quantityColumn,
-        filterOperators: quantityOnlyOperators,
-      };
-    }
-
-    return newColumns;
-  }, [columns]);
-
-  const handleRemove = async (id) => {
-    if (window.confirm(`delete ${id}`)) {
-      setLoading(true);
-      removeContract(id, user.token)
-        .then((res) => {
-          setLoading(false);
-          loadData();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+  // useEffect(() => {
+  //   localStorage.setItem('quickFilterValue', JSON.stringify(quickFilterValue));
+  // }, [quickFilterValue]);
 
   const loadFiltredData = useCallback(() => {
     setLoading(true);
 
-    getContractsFilters(filterOptions, quickFilterValue, sortOptions).then(
-      (c) => {
-        const { data, totalRowCount } = c.data;
-        // if (page > 1) {
-        //   setPage(0);
-        // }
+    getContractsFilters(
+      filterOptions,
+      quickFilterValue,
+      sortOptions,
+      page,
+      pageSize
+    ).then((c) => {
+      const { data, totalRowCount } = c.data;
 
-        const skip = page * pageSize;
-        setData(data.slice(skip, skip + pageSize));
-        setTotalRowCount(totalRowCount);
-        setLoading(false);
-      }
-    );
+      setData(data);
+      setTotalRowCount(totalRowCount);
+      setLoading(false);
+    });
   });
 
   const loadData = useCallback(() => {
     setLoading(true);
-    qualityContractsPaginationCursor(cursor, pageSize).then((c) => {
-      const { data, totalRowCount, nextCursor } = c.data;
-      setCursor(nextCursor);
+    qualityContractsPaginationCursor(page, pageSize).then((c) => {
+      const { data, totalRowCount } = c.data;
       setTotalRowCount(totalRowCount);
       setData(data);
       setLoading(false);
@@ -385,7 +220,7 @@ export default function Quality() {
         <Box sx={{ height: 'calc(100vh - 150px)' }}>
           <DataGrid
             rows={data}
-            columns={colun}
+            columns={columns}
             pagination
             pageSize={pageSize}
             rowsPerPageOptions={[pageSize]}
@@ -403,13 +238,7 @@ export default function Quality() {
             onSortModelChange={handleSortModelChange}
             components={{
               Footer: CustomFooter,
-              Toolbar: GridToolbar,
-            }}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
-              },
+              Toolbar: CustomToolbar,
             }}
             getRowSpacing={(params) => ({
               top: params.isFirstVisible ? 0 : 5,
@@ -419,6 +248,14 @@ export default function Quality() {
               [`& .${gridClasses.row}`]: {
                 bgcolor: (theme) =>
                   theme.palette.mode === 'light' ? grey[50] : grey[900],
+              },
+            }}
+            initialState={{
+              filter: {
+                filterModel: {
+                  items: [],
+                  quickFilterValues: [quickFilterValue[0]],
+                },
               },
             }}
           />
