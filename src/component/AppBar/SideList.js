@@ -78,7 +78,6 @@ const SideList = ({ drawer }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [selectedLink, setSelectedLink] = useState('');
   const location = useLocation();
   const list = useMemo(
     () => [
