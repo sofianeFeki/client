@@ -10,14 +10,14 @@ export const createContract = async (contract, authtoken) =>
   });
 
 // //export const getContracts = async (sort, order, page) =>
-//   await axios.post('http://localhost:8000/api/contracts', {
+//   await axios.post('https://komparcrmserver.onrender.com/api/contracts', {
 //     sort,
 //     order,
 //     page,
 //   });
 
 export const getContractsAll = async (filterValues) =>
-  await axios.post('http://localhost:8000/api/contracts', {
+  await axios.post('https://komparcrmserver.onrender.com/api/contracts', {
     filterValues,
   });
 
