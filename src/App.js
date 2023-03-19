@@ -14,6 +14,8 @@ import KomparAppBar from './component/AppBar';
 import Layout from './component/Layout';
 import AdminRoute from './component/Routes/AdminRoute';
 import Missing from './component/Routes/Missing';
+import SignIn from './component/Login';
+
 
 
 const Quality = lazy(() => import('./component/pages/quality'));
@@ -31,7 +33,6 @@ const ContractUpdate = lazy(() =>
   import('./component/pages/admin/ContractUpdate')
 );
 const Sav = lazy(() => import('./component/pages/Sav.js'));
-const SignIn = lazy(() => import('./component/Login'));
 
 const App = () => {
   const dispatch = useDispatch();
