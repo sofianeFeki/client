@@ -77,20 +77,7 @@ const App = () => {
   );
 
   return (
-    <Suspense
-      fallback={
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-          }}
-        >
-          <CircularProgress />
-        </div>
-      }
-    >
+    <>
       <ThemeProvider theme={darkTheme}>
         <KomparAppBar setDark={setDark} dark={dark} />
         <ToastContainer />
@@ -143,7 +130,7 @@ const App = () => {
           </Route>
         </Routes>
       </ThemeProvider>
-    </Suspense>
+    </>
   );
 };
 
