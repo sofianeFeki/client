@@ -18,21 +18,17 @@ import SignIn from './component/Login';
 
 
 
-const Quality = lazy(() => import('./component/pages/quality'));
-const WelcomeCall = lazy(() => import('./component/pages/wc'));
-const Support = lazy(() => import('./component/pages/support'));
-const ContractDetail = lazy(() =>
-  import('./component/pages/admin/ContractDetail')
-);
-const ContractCreate = lazy(() =>
-  import('./component/pages/admin/ContractCreate')
-);
-const BackOffice = lazy(() => import('./component/pages/backOffice'));
-const AdminDashboard = lazy(() => import('./component/pages/admin'));
-const ContractUpdate = lazy(() =>
-  import('./component/pages/admin/ContractUpdate')
-);
-const Sav = lazy(() => import('./component/pages/Sav.js'));
+import Quality from './component/pages/quality';
+import WelcomeCall from './component/pages/wc';
+import Support from './component/pages/support';
+import ContractDetail  from './component/pages/admin/ContractDetail';
+import  ContractCreate from './component/pages/admin/ContractCreate';
+
+import BackOffice from './component/pages/backOffice';
+import AdminDashboard from './component/pages/admin';
+
+import ContractUpdate from './component/pages/admin/ContractUpdate';
+import Sav from './component/pages/Sav.js';
 
 const App = () => {
   const dispatch = useDispatch();
