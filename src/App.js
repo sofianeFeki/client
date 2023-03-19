@@ -9,13 +9,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress } from '@mui/material';
 
-const RequireAuth = lazy(() => import('./component/Routes/RequireAuth'));
-const KomparAppBar = lazy(() => import('./component/AppBar'));
+import RequireAuth from './component/Routes/RequireAuth';
+import KomparAppBar from './component/AppBar';
+import Layout from './component/Layout';
+import AdminRoute from './component/Routes/AdminRoute';
+import Missing from './component/Routes/Missing';
+
+
 const Quality = lazy(() => import('./component/pages/quality'));
 const WelcomeCall = lazy(() => import('./component/pages/wc'));
 const Support = lazy(() => import('./component/pages/support'));
-const AdminRoute = lazy(() => import('./component/Routes/AdminRoute'));
-const Missing = lazy(() => import('./component/Routes/Missing'));
 const ContractDetail = lazy(() =>
   import('./component/pages/admin/ContractDetail')
 );
@@ -28,7 +31,6 @@ const ContractUpdate = lazy(() =>
   import('./component/pages/admin/ContractUpdate')
 );
 const Sav = lazy(() => import('./component/pages/Sav.js'));
-const Layout = lazy(() => import('./component/Layout'));
 const SignIn = lazy(() => import('./component/Login'));
 
 const App = () => {
