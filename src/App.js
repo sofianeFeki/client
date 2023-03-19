@@ -23,6 +23,9 @@ import BackOffice from './component/pages/backOffice';
 import AdminDashboard from './component/pages/admin';
 import ContractUpdate from './component/pages/admin/ContractUpdate';
 import Sav from './component/pages/Sav.js';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,11 +55,25 @@ const App = () => {
     });
     return () => unsubscribe();
   }, []);
+    const [dark, setDark] = useState(true);
+  
+   const darkTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: dark ? 'dark' : 'light',
+        },
+      }),
+    [dark]
+  );
+
 
   return (
     <Box>
-      <KomparAppBar />
-      <Routes>
+  <ThemeProvider theme={darkTheme}>
+        <KomparAppBar setDark={setDark} dark={dark} />
+        <ToastContainer />
+          <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/login" element={<SignIn />} />
           <Route element={<RequireAuth allowedRoles={['admin', 'qualite']} />}>
@@ -82,6 +99,7 @@ const App = () => {
           </Route>
         </Route>
       </Routes>
+      </ThemeProvider>
     </Box>
   );
 };
