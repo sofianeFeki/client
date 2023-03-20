@@ -58,7 +58,7 @@ const initialQualificationsWc = [
   'A_suivre',
   'annulation',
   'non-qualifié',
-  'sav',
+  'SAV',
   'faux_numéro',
 ];
 
