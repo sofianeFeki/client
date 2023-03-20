@@ -84,23 +84,27 @@ const Filters = ({
     },
   ]);
 
-  useEffect(() => {
+   useEffect(() => {
+    // we offset the time zone to not get 
+    const timezoneOffset = new Date().getTimezoneOffset();
+    const startDate = moment(state[0].startDate)
+      .utcOffset(timezoneOffset, true)
+      .toISOString();
+
+    const endDate = state[0].endDate
+      ? moment(state[0].endDate).utcOffset(timezoneOffset, true).toISOString()
+      : null;
+
     const updatedFilterValues = {
       ...filterValues,
       dateRange: {
-        startDate: moment(state[0].startDate).utc().toISOString(),
-        endDate: state[0].endDate
-          ? moment(state[0].endDate).utc().toISOString()
-          : null,
+        startDate,
+        endDate,
         key: 'selection',
       },
     };
     setFilterValues(updatedFilterValues);
   }, [state]);
-
-  const handleDateRangeChange = (item) => {
-    setState([item.selection]);
-  };
 
   // get the target element to toggle
   const refOne = useRef(null);
