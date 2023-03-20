@@ -105,6 +105,10 @@ const Filters = ({
     };
     setFilterValues(updatedFilterValues);
   }, [state]);
+  
+  const handleDateRangeChange = (item) => {
+    setState([item.selection]);
+  };
 
   // get the target element to toggle
   const refOne = useRef(null);
