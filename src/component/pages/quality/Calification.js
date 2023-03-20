@@ -401,10 +401,10 @@ const Calification = () => {
                   >
                     <MenuItem value={'non-qualifié'}>non-qualifié</MenuItem>
 
-                    <MenuItem value={'Conforme'}>Conforme</MenuItem>
-                    <MenuItem value={'Non_conforme'}>Non conforme</MenuItem>
-                    <MenuItem value={'SAV'}>SAV</MenuItem>
-                    <MenuItem value={'Annulation'}>Annulation</MenuItem>
+                    <MenuItem value={'conforme'}>Conforme</MenuItem>
+                    <MenuItem value={'non_conforme'}>Non conforme</MenuItem>
+                    <MenuItem value={'sav'}>SAV</MenuItem>
+                    <MenuItem value={'annulation'}>Annulation</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
