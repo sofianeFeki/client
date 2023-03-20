@@ -47,7 +47,7 @@ const initialPartenaires = [
 
 const initialQualificationsQté = [
   'conforme',
-  'non-conforme',
+  'non_conforme',
   'SAV',
   'annulation',
   'non-qualifié',
