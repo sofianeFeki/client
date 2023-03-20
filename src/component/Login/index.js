@@ -52,9 +52,7 @@ export default function SignIn() {
   const from = location.state?.from.pathname || '/';
   const { user } = useSelector((state) => ({ ...state }));
 
-  React.useEffect(() => {
-    if (user && user.token) history(`/${user.role}`);
-  }, [user]);
+ 
 
   const roleBasedRedirect = (res) => {
     if (res.data.role === 'admin') {
