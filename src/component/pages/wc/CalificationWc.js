@@ -165,10 +165,12 @@ const CalificationWc = () => {
                   >
                     <MenuItem value={'non-qualifié'}>non-qualifié</MenuItem>
 
-                    <MenuItem value={'Conforme'}>Conforme</MenuItem>
-                    <MenuItem value={'Non_conforme'}>Non conforme</MenuItem>
-                    <MenuItem value={'SAV'}>SAV</MenuItem>
-                    <MenuItem value={'Annulation'}>Annulation</MenuItem>
+                    <MenuItem value={'validé'}>Validé</MenuItem>
+                    <MenuItem value={'A_suivre'}>A suivre</MenuItem>
+                    <MenuItem value={'sav'}>SAV</MenuItem>
+                    <MenuItem value={'annulation'}>Annulation</MenuItem>
+                    <MenuItem value={'faux_numéro'}>Faux numéro</MenuItem>
+
                   </Select>
 
                   {qualification === 'Annulation' && (
