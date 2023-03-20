@@ -76,7 +76,7 @@ const App = () => {
           <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/login" element={<SignIn />} />
-          <Route element={<RequireAuth allowedRoles={['admin', 'qualite']} />}>
+          <Route element={<RequireAuth allowedRoles={['admin', 'quality']} />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/quality" element={<Quality />} />
             <Route path="/contract/:slug" element={<ContractDetail />} />
