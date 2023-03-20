@@ -167,7 +167,7 @@ const CalificationWc = () => {
 
                     <MenuItem value={'validé'}>Validé</MenuItem>
                     <MenuItem value={'A_suivre'}>A suivre</MenuItem>
-                    <MenuItem value={'sav'}>SAV</MenuItem>
+                    <MenuItem value={'SAV'}>SAV</MenuItem>
                     <MenuItem value={'annulation'}>Annulation</MenuItem>
                     <MenuItem value={'faux_numéro'}>Faux numéro</MenuItem>
 
