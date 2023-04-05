@@ -89,6 +89,7 @@ const App = () => {
             <Route
               element={<RequireAuth allowedRoles={['admin', 'quality']} />}
             >
+               <Route path="/" element={<HomePage />} />
               <Route path="/quality" element={<Quality />} />
             </Route>
             <Route element={<RequireAuth allowedRoles={['admin', 'wc']} />}>
@@ -98,19 +99,25 @@ const App = () => {
             <Route
               element={<RequireAuth allowedRoles={['admin', 'support']} />}
             >
+                              <Route path="/" element={<HomePage />} />
+
               <Route path="/support" element={<Support />} />
             </Route>
             <Route
               element={<RequireAuth allowedRoles={['admin', 'backOffice']} />}
             >
+                              <Route path="/" element={<HomePage />} />
+
               <Route path="/back-office" element={<BackOffice />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={['admin', 'sav']} />}>
+              <Route path="/" element={<HomePage />} />
               <Route path="/sav" element={<Sav />} />
             </Route>
 
             <Route element={<AdminRoute />}>
+               <Route path="/" element={<HomePage />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/contract" element={<ContractCreate />} />
               <Route
