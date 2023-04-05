@@ -103,7 +103,7 @@ const CalificationWc = () => {
         if (user.role === 'admin') {
           history('/admin');
         } else {
-          history('/quality');
+          history('/welcome-call');
         }
       })
       .catch((err) => {
