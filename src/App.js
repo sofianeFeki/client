@@ -73,38 +73,55 @@ const App = () => {
   <ThemeProvider theme={darkTheme}>
         <KomparAppBar setDark={setDark} dark={dark} />
         <ToastContainer />
-          <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/login" element={<SignIn />} />
-          <Route element={<RequireAuth allowedRoles={['admin', 'quality']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/quality" element={<Quality />} />
-            <Route path="/contract/:slug" element={<ContractDetail />} />
+         <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/login" element={<SignIn />} />
+            <Route path="*" element={<Missing />} />
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={['admin', 'quality', 'wc', 'sav', 'backOffice']}
+                />
+              }
+            >
+              <Route path="/contract/:slug" element={<ContractDetail />} />
+            </Route>
+            <Route
+              element={<RequireAuth allowedRoles={['admin', 'quality']} />}
+            >
+              <Route path="/quality" element={<Quality />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={['admin', 'wc']} />}>
+              <Route path="/welcome-call" element={<WelcomeCall />} />
+            </Route>
+
+            <Route
+              element={<RequireAuth allowedRoles={['admin', 'support']} />}
+            >
+              <Route path="/support" element={<Support />} />
+            </Route>
+            <Route
+              element={<RequireAuth allowedRoles={['admin', 'backOffice']} />}
+            >
+              <Route path="/back-office" element={<BackOffice />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={['admin', 'sav']} />}>
+              <Route path="/sav" element={<Sav />} />
+            </Route>
+
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/contract" element={<ContractCreate />} />
+              <Route
+                path="/contract-update/:slug"
+                element={<ContractUpdate />}
+              />
+            </Route>
           </Route>
-          <Route element={<RequireAuth allowedRoles={['admin', 'wc']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/welcome-call" element={<WelcomeCall />} />
-           <Route path="/contract/:slug" element={<ContractDetail />} />
-          </Route>
-         <Route element={<RequireAuth allowedRoles={['admin', 'sav']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/sav" element={<Sav />} />
-           <Route path="/contract/:slug" element={<ContractDetail />} />
-          </Route>
-          <Route element={<RequireAuth allowedRoles={['admin', 'support']} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/support" element={<Support />} />
-          </Route>
-          <Route path="*" element={<Missing />} />
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/contract" element={<ContractCreate />} />
-            <Route path="/back-office" element={<BackOffice />} />
-            <Route path="/contract-update/:slug" element={<ContractUpdate />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
       </ThemeProvider>
+
     </Box>
   );
 };
