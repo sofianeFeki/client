@@ -103,7 +103,7 @@ const CalificationSav = () => {
         if (user.role === 'admin') {
           history('/admin');
         } else {
-          history('/quality');
+          history('/sav');
         }
       })
       .catch((err) => {
