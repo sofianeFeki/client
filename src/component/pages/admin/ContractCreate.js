@@ -58,8 +58,8 @@ const ContractCreate = () => {
       type: 'date',
 
       renderCell: (params) =>
-        moment(params.row.date_début, 'DD/MM/YYYY HH:mm').format(
-          'DD/MM/YYYY HH:mm'
+        moment(params.row.date_début, 'DD/MM/YYYY HH:mm:ss').format(
+          'DD/MM/YYYY HH:mm:ss'
         ),
     },
     {
