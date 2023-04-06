@@ -69,8 +69,8 @@ const ContractCreate = () => {
       type: 'date',
 
       renderCell: (params) =>
-        moment(params.row.date_signature, 'DD/MM/YYYY HH:mm').format(
-          'DD/MM/YYYY HH:mm'
+        moment(params.row.date_signature, 'DD/MM/YYYY HH:mm:ss').format(
+          'DD/MM/YYYY HH:mm:ss'
         ),
     },
     {
@@ -98,7 +98,7 @@ const ContractCreate = () => {
           // check if the header contains "date"
           rowData[headers[index]] = moment(
             element,
-            'DD/MM/YYYY HH:mm'
+            'DD/MM/YYYY HH:mm:ss'
           ).toDate();
         } else {
           rowData[headers[index]] = element;
