@@ -2,7 +2,7 @@ import { Button, Divider, Typography, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getContract } from '../../../functions/product';
 import { MainContainer } from '../../AppBar/Style';
 import { DrawerHeader } from '../../AppBar/Style';
@@ -18,15 +18,18 @@ import TableContainer from '@mui/material/TableContainer';
 import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
 import moment from 'moment';
+import { ArrowBack } from '@mui/icons-material';
 
 function createData(name, value) {
   return { name, value };
 }
 
 const ContractDetail = () => {
-  const { drawer } = useSelector((state) => ({ ...state }));
+  const { drawer, user } = useSelector((state) => ({ ...state }));
+  const navigate = useNavigate();
 
   const [data, setData] = useState([]);
+  const { quality } = data;
   const rowsContract = [
     createData('Ref contrat', data.contratRef),
     createData('Ref client', data.clientRef),
@@ -58,12 +61,28 @@ const ContractDetail = () => {
     createData('Commune', data.Commune),
   ];
 
+  const handleBackClick = () => {
+    if (user.role === 'admin') {
+      navigate('/admin');
+    }
+    if (user.role === 'sav') {
+      navigate('/sav');
+    }
+    if (user.role === 'quality') {
+      navigate('/quality');
+    }
+    if (user.role === 'wc') {
+      navigate('/welcome-call');
+    }
+  };
+
   let { slug } = useParams();
   useEffect(() => {
     loadContract();
   }, []);
   const loadContract = () => {
     getContract(slug).then((c) => setData(c.data));
+    console.log('detail contrat', data);
   };
 
   return (
@@ -74,9 +93,24 @@ const ContractDetail = () => {
             Détail de la souscription
           </Typography>
           <Stack direction="row" spacing={1} sx={{ height: '40px', mt: 2 }}>
-            <Calification />
-            <CalificationWc />
-            <CalificationSav />
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<ArrowBack />}
+              onClick={handleBackClick}
+            >
+              Retour à la liste
+            </Button>
+            {user && user.role === 'quality' && <Calification />}
+            {user && user.role === 'sav' && <CalificationSav />}
+            {user && user.role === 'wc' && <CalificationWc />}
+            {user && user.role === 'admin' && (
+              <>
+                <Calification />
+                <CalificationWc />
+                <CalificationSav />{' '}
+              </>
+            )}
           </Stack>
         </Box>
 
@@ -112,6 +146,18 @@ const ContractDetail = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            {quality && (
+              <Paper elevation={4} sx={{ height: 150, mt: 1 }}>
+                <Box sx={{ p: 2 }}>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    Qualification qualité : {quality.qualification || ''}
+                  </Typography>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    Commentaire qualité : {quality.comment || ''}
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </MainContainer>
