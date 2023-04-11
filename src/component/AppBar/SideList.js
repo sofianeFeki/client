@@ -114,6 +114,20 @@ const SideList = ({ drawer }) => {
     ],
     []
   );
+
+  const filteredList = useMemo(() => {
+    if (user && user.role === 'admin') {
+      return list;
+    } else if (user && user.role === 'sav') {
+      return list.filter((item) => item.title === 'SAV');
+    } else if (user && user.role === 'wc') {
+      return list.filter((item) => item.title === 'welcome call');
+    } else if (user && user.role === 'quality') {
+      return list.filter((item) => item.title === 'Quality');
+    } else {
+      return [];
+    }
+  }, [user, list]);
   async function logout() {
     await signOut(auth);
     dispatch({
@@ -141,7 +155,7 @@ const SideList = ({ drawer }) => {
           <Divider />
 
           <List>
-            {list.map((item) => (
+            {filteredList.map((item) => (
               <ListItem
                 key={item.title}
                 disablePadding
