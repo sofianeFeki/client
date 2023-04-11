@@ -55,7 +55,7 @@ const App = () => {
     });
     return () => unsubscribe();
   }, []);
-    const [dark, setDark] = useState(true);
+    const [dark, setDark] = useState(false);
   
    const darkTheme = useMemo(
     () =>
