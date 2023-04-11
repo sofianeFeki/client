@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Unstable_Grid2';
 
 import {
   FormControl,
@@ -215,172 +216,197 @@ const Calification = () => {
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          quality qualification
+        <DialogTitle
+          style={{ cursor: 'move', fontWeight: 700 }}
+          id="draggable-dialog-title"
+        >
+          Qualité Kompar
         </DialogTitle>
         <DialogContent>
-          <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-            <Typography variant="h6" gutterBottom>
-              A Respecter impérativement :
-            </Typography>
-
+          <FormControl component="fieldset" variant="standard">
             <FormGroup>
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Appel_enregistré}
-                    name="Appel_enregistré"
-                  />
-                }
-                label="Appel enregistré"
-                onChange={handleChange}
-              />
+              <Grid container spacing={2}>
+                <Grid xs={6}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: 500 }}
+                  >
+                    A Respecter impérativement
+                  </Typography>
 
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState._14j_de_rétractation}
-                    name="_14j_de_rétractation"
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState.Appel_enregistré}
+                        name="Appel_enregistré"
+                      />
+                    }
+                    label="Appel enregistré"
                     onChange={handleChange}
                   />
-                }
-                label="14j de rétractation "
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Autorisation_accès_GRD}
-                    name="Autorisation_accès_GRD"
-                    onChange={handleChange}
-                  />
-                }
-                label="Autorisation accès GRD"
-              />
 
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Inscription_Bloctel}
-                    name="Inscription_Bloctel"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState._14j_de_rétractation}
+                        name="_14j_de_rétractation"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="14j de rétractation "
                   />
-                }
-                label="Inscription Bloctel"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Valider_les_coordonnées_du_client}
-                    name="Valider_les_coordonnées_du_client"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState.Autorisation_accès_GRD}
+                        name="Autorisation_accès_GRD"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Autorisation accès GRD"
                   />
-                }
-                label="Valider les coordonnées du client"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Expliquer_que_nous_sommes_KOMPAR}
-                    name="Expliquer_que_nous_sommes_KOMPAR"
-                    onChange={handleChange}
-                  />
-                }
-                label="Expliquer que nous sommes KOMPAR	"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    checked={switchState.Explication_changement_de_fournisseur}
-                    name="Explication_changement_de_fournisseur"
-                    onChange={handleChange}
-                  />
-                }
-                label="Explication changement de fournisseur"
-              />
 
-              <Typography variant="h6" gutterBottom>
-                Il est strictement interdit de :
-              </Typography>
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState.Inscription_Bloctel}
+                        name="Inscription_Bloctel"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Inscription Bloctel"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState.Valider_les_coordonnées_du_client}
+                        name="Valider_les_coordonnées_du_client"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Valider les coordonnées du client"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={switchState.Expliquer_que_nous_sommes_KOMPAR}
+                        name="Expliquer_que_nous_sommes_KOMPAR"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Expliquer que nous sommes KOMPAR	"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="success"
+                        checked={
+                          switchState.Explication_changement_de_fournisseur
+                        }
+                        name="Explication_changement_de_fournisseur"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Explication changement de fournisseur"
+                  />
+                </Grid>
+                <Grid xs={6}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: 500 }}
+                  >
+                    Il est strictement interdit de
+                  </Typography>
 
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.Discours_frauduleux_mensenger}
-                    name="Discours_frauduleux_mensenger"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.Discours_frauduleux_mensenger}
+                        name="Discours_frauduleux_mensenger"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Discours frauduleux/mensenger"
                   />
-                }
-                label="Discours frauduleux/mensenger"
-              />
 
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.MES_non_conforme}
-                    name="MES_non_conforme"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.MES_non_conforme}
+                        name="MES_non_conforme"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="MES non conforme"
                   />
-                }
-                label="MES non conforme"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.non_conformité_signature_recap}
-                    name="non_conformité_signature_recap"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.non_conformité_signature_recap}
+                        name="non_conformité_signature_recap"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="non conformité signature / recap"
                   />
-                }
-                label="non conformité signature / recap"
-              />
 
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.Validation_à_la_place_du_prospect}
-                    name="Validation_à_la_place_du_prospect"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.Validation_à_la_place_du_prospect}
+                        name="Validation_à_la_place_du_prospect"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Validation à la place du prospect"
                   />
-                }
-                label="Validation à la place du prospect"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.Comportement_général}
-                    name="Comportement_général"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.Comportement_général}
+                        name="Comportement_général"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Comportement général"
                   />
-                }
-                label="Comportement général"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.Mineur_trop_âgée_non_lucide}
-                    name="Mineur_trop_âgée_non_lucide"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.Mineur_trop_âgée_non_lucide}
+                        name="Mineur_trop_âgée_non_lucide"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Mineur, trop âgée/non lucide	"
                   />
-                }
-                label="Mineur, trop âgée/non lucide	"
-              />
-              <FormControlLabel
-                control={
-                  <Android12Switch
-                    color="error"
-                    checked={switchState.IBAN_invalide}
-                    name="IBAN_invalide"
-                    onChange={handleChange}
+                  <FormControlLabel
+                    control={
+                      <Android12Switch
+                        color="error"
+                        checked={switchState.IBAN_invalide}
+                        name="IBAN_invalide"
+                        onChange={handleChange}
+                      />
+                    }
+                    label="IBAN invalide:	"
                   />
-                }
-                label="IBAN invalide:	"
-              />
+                </Grid>
+              </Grid>
 
               <Box sx={{ my: 2 }}>
                 <TextField
@@ -401,10 +427,10 @@ const Calification = () => {
                   >
                     <MenuItem value={'non-qualifié'}>non-qualifié</MenuItem>
 
-                    <MenuItem value={'conforme'}>Conforme</MenuItem>
-                    <MenuItem value={'non_conforme'}>Non conforme</MenuItem>
+                    <MenuItem value={'Conforme'}>Conforme</MenuItem>
+                    <MenuItem value={'Non_conforme'}>Non conforme</MenuItem>
                     <MenuItem value={'SAV'}>SAV</MenuItem>
-                    <MenuItem value={'annulation'}>Annulation</MenuItem>
+                    <MenuItem value={'Annulation'}>Annulation</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
